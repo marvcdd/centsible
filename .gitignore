@@ -1,0 +1,43 @@
+# Byte-compiled / caches
+# 字节码与各类缓存
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+*.whl
+*.egg
+MANIFEST
+
+# Virtual environments
+# 虚拟环境
+.venv/
+venv/
+
+# Centsible runtime artefacts
+# Centsible 运行时产物
+data/
+logs/
+*.log
+*.db
+*.db-wal
+*.db-shm
+
+# Test / tooling caches
+# 测试与工具缓存
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# Editors / OS
+# 编辑器与操作系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

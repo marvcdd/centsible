@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "centsible"
+version = "1.0.0"
+description = "Centsible - a small, exact double-entry bookkeeping engine with a CLI and an optional windowed interface"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Centsible contributors" }]
+keywords = [
+    "accounting",
+    "bookkeeping",
+    "double-entry",
+    "ledger",
+    "cli",
+    "tkinter",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Accounting",
+    "Environment :: Console",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.scripts]
+centsible = "centsible.interface.launcher:run"
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+
+[tool.setuptools.packages.find]
+include = ["centsible*"]
+
+[tool.setuptools.package-data]
+centsible = ["py.typed"]

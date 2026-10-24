@@ -1,0 +1,18 @@
+# Keep line endings identical on every platform, so a Windows checkout and a
+# Linux checkout never show up as a whole-file diff.
+# 统一换行符，避免 Windows 与 Linux 的检出在同一文件上出现整文件差异。
+* text=auto eol=lf
+
+*.py    text eol=lf
+*.md    text eol=lf
+*.toml  text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.lock  text eol=lf
+
+# Binary assets stay binary.
+# 二进制文件保持原样。
+*.db    binary
+*.xlsx  binary
+*.png   binary
+*.jpg   binary

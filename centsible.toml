@@ -1,0 +1,32 @@
+# Centsible configuration
+# Centsible 配置文件
+# Every key below is optional; the values shown are the defaults.
+# 下面每个键都是可选的；此处展示的值就是默认值。
+
+[database]
+path = "data/ledger.db"
+
+[ledger]
+currency = "CNY"
+fiscal_year_start_month = 1
+
+[logging]
+level = "INFO"
+# file = "logs/centsible.log"
+# 取消上面一行的注释即可把日志写入文件；默认只把警告与错误输出到 stderr。
+# Uncomment the line above to log to a file; by default only warnings and
+# errors are written to stderr.
+
+[format]
+date = "%Y-%m-%d"
+
+[interface]
+# 是否启用命令行界面（内置默认开启）。
+# Whether the command line front end is enabled (on by default).
+cli = true
+# 是否启用窗口界面（内置默认关闭；打开后运行 `centsible --gui` 或直接运行
+# `centsible` 即弹出窗口）。
+# Whether the windowed (tkinter) front end is enabled (off by default; once
+# enabled, `centsible --gui` or a bare `centsible` opens the window).
+gui = true
+
