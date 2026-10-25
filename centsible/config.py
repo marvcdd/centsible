@@ -213,7 +213,12 @@ class Config:
 
         path = self.database_path
         if path.is_absolute():
-            return path
+            # Resolving an absolute path is not a no-op on Windows: CI runners
+            # spell their TEMP directory with an 8.3 short name such as
+            # ``RUNNER~1``, and the same file must not have two spellings.
+            # 在 Windows 上解析绝对路径并非空操作：CI 运行器会把 TEMP 目录写成
+            # ``RUNNER~1`` 这样的 8.3 短名，同一个文件不能有两种写法。
+            return path.resolve()
         base = self.source.parent if self.source is not None else Path.cwd()
         return (base / path).resolve()
 
@@ -222,7 +227,9 @@ class Config:
             return None
         path = self.log_file
         if path.is_absolute():
-            return path
+            # Same short-name normalisation as the database path.
+            # 与数据库路径相同的短名规范化。
+            return path.resolve()
         base = self.source.parent if self.source is not None else Path.cwd()
         return (base / path).resolve()
 

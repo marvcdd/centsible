@@ -143,6 +143,23 @@ date = "%d/%m/%Y"
         path = self.write(f'[database]\npath = "{absolute.as_posix()}"\n')
         self.assertEqual(Config.load(path).resolved_database_path(), absolute.resolve())
 
+    def test_absolute_paths_are_canonicalised(self) -> None:
+        # ``..`` collapses exactly like a resolved path, so callers may compare
+        # against ``Path.resolve()`` even when the input is already absolute.
+        # ``..`` 会像解析后的路径一样被折叠，因此即使输入已是绝对路径，
+        # 调用方也可以直接用 ``Path.resolve()`` 比较。
+        dotted = self.directory / "sub" / ".." / "abs.db"
+        config = Config(
+            database_path=dotted,
+            log_file=self.directory / "sub" / ".." / "run.log",
+        )
+        self.assertEqual(
+            config.resolved_database_path(), (self.directory / "abs.db").resolve()
+        )
+        self.assertEqual(
+            config.resolved_log_file(), (self.directory / "run.log").resolve()
+        )
+
     def test_missing_explicit_file(self) -> None:
         with self.assertRaises(ConfigurationError):
             Config.load(self.directory / "nope.toml")
