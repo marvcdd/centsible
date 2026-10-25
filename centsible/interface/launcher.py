@@ -30,7 +30,7 @@ error instead of pretending it does not exist.  ``--version``, ``-h`` and
 from __future__ import annotations
 
 import sys
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 
 from centsible.config import Config
 from centsible.errors import CentsibleError
@@ -117,6 +117,23 @@ def _drop_config_plumbing(arguments: Sequence[str]) -> list[str]:
     ]
 
 
+def _load_gui_runner() -> Callable[[Config], int]:
+    """Import the window runner lazily so routing works without tkinter.
+
+    The import is kept behind a seam: the router itself never needs tkinter, and
+    a Python build without it only fails when the window is actually requested.
+
+    惰性导入窗口运行器，使路由逻辑在没有 tkinter 时也能工作。
+
+    导入被放在一个接缝之后：路由本身从不需要 tkinter，缺少它的 Python 只有在
+    真正请求窗口时才会失败。
+    """
+
+    from centsible.interface.gui.app import run_gui
+
+    return run_gui
+
+
 def _run_gui(config: Config, arguments: list[str]) -> int:
     if not config.gui_enabled:
         from centsible.errors import ConfigurationError
@@ -135,7 +152,7 @@ def _run_gui(config: Config, arguments: list[str]) -> int:
             "'centsible --gui' to open the window"
         )
     try:
-        from centsible.interface.gui.app import run_gui
+        runner = _load_gui_runner()
     except ImportError as exc:
         from centsible.errors import ConfigurationError
 
@@ -143,7 +160,7 @@ def _run_gui(config: Config, arguments: list[str]) -> int:
             "the windowed interface needs tkinter, which this Python "
             "installation does not provide"
         ) from exc
-    return run_gui(config)
+    return runner(config)
 
 
 def _load_config(arguments: Sequence[str]) -> Config:

@@ -104,20 +104,33 @@ class RunTests(unittest.TestCase):
 
     def test_enabled_window_is_delegated_to_the_app(self) -> None:
         path = self.write("gui = true\n")
+        runner = mock.Mock(return_value=0)
         with mock.patch(
-            "centsible.interface.gui.app.run_gui", return_value=0
-        ) as run_gui:
+            "centsible.interface.launcher._load_gui_runner", return_value=runner
+        ):
             code, _out, _err = self.invoke(path)
         self.assertEqual(code, 0)
-        run_gui.assert_called_once()
+        runner.assert_called_once()
 
     def test_the_window_takes_no_further_arguments(self) -> None:
         path = self.write("gui = true\n")
-        with mock.patch("centsible.interface.gui.app.run_gui") as run_gui:
+        with mock.patch(
+            "centsible.interface.launcher._load_gui_runner"
+        ) as load_runner:
             code, _out, err = self.invoke(path, "--gui", "init")
         self.assertEqual(code, 78)
         self.assertIn("takes no further arguments", err)
-        run_gui.assert_not_called()
+        load_runner.assert_not_called()
+
+    def test_missing_tkinter_is_a_configuration_error(self) -> None:
+        path = self.write("gui = true\n")
+        with mock.patch(
+            "centsible.interface.launcher._load_gui_runner",
+            side_effect=ImportError("no tkinter"),
+        ):
+            code, _out, err = self.invoke(path)
+        self.assertEqual(code, 78)
+        self.assertIn("needs tkinter", err)
 
     def test_dangling_config_flag_is_a_usage_error(self) -> None:
         out, err = io.StringIO(), io.StringIO()

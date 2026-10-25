@@ -18,12 +18,15 @@ from centsible.domain.transactions import Posting
 HAS_TK = False
 try:
     import tkinter as tk
+    from tkinter import ttk
 except ImportError:  # pragma: no cover - Python built without tkinter | 未带 tkinter 的 Python
     pass
 else:
     try:
         _probe = tk.Tk()
         _probe.withdraw()
+        ttk.Frame(_probe).pack()
+        _probe.update()
         _probe.destroy()
         del _probe
         HAS_TK = True

@@ -285,7 +285,7 @@ date = "%Y-%m-%d"
 │  ├─ errors.py               # 错误层次 + 退出码
 │  ├─ bootstrap.py            # 组合根（唯一知道所有层的地方）
 │  └─ demo.py                 # 演示数据
-├─ tests/                     # 518 个 unittest 用例
+├─ tests/                     # 519 个 unittest 用例
 ├─ tools/                     # 开发期工具，不是运行时依赖
 │  ├─ check_comments.py       # 校验每处注释/docstring 是否中英双语
 │  └─ ast_guard.py            # 用 AST 对比证明「只改注释」没动可执行代码
